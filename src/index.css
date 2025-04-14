@@ -160,6 +160,11 @@ footer a:hover {
   color: black;
 }
 
+
+.post__edit a {
+  text-decoration: none;
+  color:gray;
+}
 /* post detail */
 .post__detail .post__title {
   font-size:36px;
@@ -184,10 +189,7 @@ footer a:hover {
 
 }
 
-.post__edit a {
-  text-decoration: none;
-  color:gray;
-}
+
 /* profile */
 .profile__box {
   display: flex;

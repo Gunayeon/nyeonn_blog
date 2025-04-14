@@ -6,7 +6,7 @@ import PostNew from "../pages/posts/new"
 import ProfilePage from "../pages/profile"
 import LoginPage from "../pages/login"
 import SignupPage from "../pages/signup"
-import {Route, Routes,Navigate,Link} from 'react-router-dom'
+import {Route, Routes,Navigate} from 'react-router-dom'
 export default function Router() {
   return (
     <>
