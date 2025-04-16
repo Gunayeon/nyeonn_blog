@@ -21,7 +21,7 @@ function App() {
       }
       setInit(true);
     });
-  }, [auth])
+  }, [auth]);
   return (
     <>
       <ToastContainer />
