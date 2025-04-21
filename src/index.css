@@ -93,6 +93,9 @@ footer a:hover {
 
 }
 
+.post__text--pre-wrap {
+  white-space: pre-wrap;
+}
 .post__box {
   padding-top: 24px;
   padding-bottom: 24px;
@@ -165,6 +168,15 @@ footer a:hover {
   text-decoration: none;
   color:gray;
 }
+
+.post__no-post {
+  padding:24px;
+  text-align: center;
+  color: gray;
+  border: 1px solid #f2f2f2;
+  border-radius: 20px;
+
+}
 /* post detail */
 .post__detail .post__title {
   font-size:36px;
@@ -230,6 +242,8 @@ footer a:hover {
 .profile__logout {
   color: gray;
   font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .profile__logout:hover,
@@ -423,4 +437,47 @@ input:checked + .carousel__slide-container .nav label {
 .form .form__btn--submit:hover,
 .form .form__btn--submit:focus {
   background-color: #1945a4;
+}
+
+
+/* login form */
+.form--lg {
+  min-height: 70vh;
+  margin-top: 10vh;
+}
+
+.form__title {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.form__link {
+  margin-left: 10px;
+  text-decoration: none;
+  color: gray;
+}
+
+.form__link:hover,
+.form__link:focus {
+  color: black;
+}
+
+.form__error {
+  color:red;
+}
+
+/* loader */
+.loader {
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 5px solid #2563eb;
+  border-radius: 50%;
+  z-index: 9999;
+  animation: rotation 1s linear infinite;
 }
