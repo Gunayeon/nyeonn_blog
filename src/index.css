@@ -93,6 +93,9 @@ footer a:hover {
 
 }
 
+.post__text--pre-wrap {
+  white-space: pre-wrap;
+}
 .post__box {
   padding-top: 24px;
   padding-bottom: 24px;

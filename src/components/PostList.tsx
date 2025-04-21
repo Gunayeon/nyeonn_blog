@@ -10,23 +10,26 @@ interface PostListProps {
 
 type TabType = "all" | "my";
 
-
-interface PostProps {
+// 게시글 작성 필드 타입 지정
+export interface PostProps {
     id:string;
     title:string;
     email:string;
     summary:string;
     content: string;
     createAt:string;
+    updatedAt:string;
+    uid:string;
 }
 export default function PostList({hasNavigation = true}:PostListProps) {
     const [activeTab, setActiveTab]=useState<TabType>("all");
     const [posts, setPosts] = useState<PostProps[]>([]);
     const {user} =useContext(AuthContext);
     const getPosts = async () => {
+        // firestore데이터베이스에 존재하는 post문서를 불러옴
         const datas = await getDocs(collection(db, "posts"));
 
-        console.log(datas);
+        // 불러온 문서들을 setPosts에 저장
         datas?.forEach((doc) => {
             const dataObj={...doc.data(),id:doc.id};
             setPosts((prev)=> [...prev, dataObj as PostProps]);
@@ -61,7 +64,7 @@ export default function PostList({hasNavigation = true}:PostListProps) {
                             </div>
                             <div className="post__title">{post?.title}</div>
                             <div className="post__text">
-                                {post?.content}
+                                {post?.summary}
                             </div>
                         </Link>
                         {post?.email === user?.email &&(
