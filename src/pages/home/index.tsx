@@ -8,7 +8,7 @@ export default function Home() {
         <div>
             <Header />
             <Carousel />
-            <PostList />
+            <PostList/>
             <Footer />
         </div>
     )
