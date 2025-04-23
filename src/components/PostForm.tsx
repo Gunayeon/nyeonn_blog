@@ -27,6 +27,8 @@ export default function PostForm() {
                     summary: summary,
                     content: content,
                     updatedAt: new Date()?.toLocaleDateString(),
+                    email: user?.email,
+                    uid: user?.uid
                 });
 
                 toast?.success("게시글을 수정했습니다.");
@@ -108,7 +110,7 @@ export default function PostForm() {
                 <textarea name="content" id="content" required onChange={onChange} value={content}/>
             </div>
             <div className="form__block">
-                <input type="submit" value="제출" className="form__btn--submit" />
+                <input type="submit" value={post ? '수정' : '제출'} className="form__btn--submit" />
             </div>
         </form>
     )
