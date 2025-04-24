@@ -1,5 +1,5 @@
 import AuthContext from "context/AuthContext";
-import { collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "firebaseApp";
 import {useContext, useEffect, useState} from "react"
 import {Link} from "react-router-dom"
@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 interface PostListProps {
     hasNavigation?: boolean;
-    defualtTab?: TabType;
+    defualtTab?: TabType | CategoryType;
 }
 
 type TabType = "all" | "my";
@@ -22,13 +22,20 @@ export interface PostProps {
     createdAt:string;
     updatedAt:string;
     uid:string;
+    category?: CategoryType;
 }
+
+export type CategoryType="Frontend"|"Backend"|"Web"|"Native";
+export const CATEGORIES: CategoryType[]=["Frontend", "Backend","Web","Native"];
+
+
 export default function PostList({
     hasNavigation = true,
     defualtTab ="all",
 
+
     }:PostListProps) {
-    const [activeTab, setActiveTab]=useState<TabType>(defualtTab);
+    const [activeTab, setActiveTab]=useState<TabType | CategoryType>(defualtTab);
     const [posts, setPosts] = useState<PostProps[]>([]);
     const {user} =useContext(AuthContext);
     const getPosts = async () => {
@@ -42,9 +49,13 @@ export default function PostList({
             // 나의 글만 필터링
             postsQuery = query(postsRef, where('uid', '==', user.uid),orderBy("createdAt", "desc") )
 
-        } else {
+        } else if(activeTab==="all") {
             // 모든 글 보여주기
             postsQuery = query(postsRef, orderBy("createdAt", "desc"))
+
+        } else {
+            // 카테고리 글 보여주기
+            postsQuery = query(postsRef, where("category","==",activeTab),orderBy("createdAt", "desc"))
         }
         // 불러온 문서들을 setPosts에 저장
         const datas = await getDocs(postsQuery);
@@ -69,15 +80,21 @@ export default function PostList({
         }
     }
     useEffect(() => {
-        getPosts();
+        getPosts()
         console.log("ddd");
     },[activeTab])
+
     return (
         <>
             {hasNavigation && (
                 <div className="post__navigation">
                     <div role="presentation" onClick={() => setActiveTab("all")} className={activeTab === 'all' ? "post__navigation--active": ""}>전체</div>
                     <div role="presentation" onClick={() => setActiveTab("my")} className={activeTab === 'my' ? "post__navigation--active": ""}>나의 글</div>
+                    {CATEGORIES?.map((category) => (
+                        <div key={category} role="presentation" onClick={() => setActiveTab(category)} className={activeTab === category ? "post__navigation--active" : ""}>
+                            {category}
+                        </div>
+                    ))}
                 </div>
             )}
             
