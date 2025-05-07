@@ -1,81 +1,22 @@
 import { useContext, useState } from "react"
-import { PostProps } from "./PostList";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { CommentsInterface, PostProps } from "./PostList";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "firebaseApp";
 import AuthContext from "context/AuthContext";
 import { toast } from "react-toastify";
 
-const COMMENTS = [
-    {
-        id:1,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:2,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:3,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:4,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:5,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:6,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:7,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:8,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:9,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    },
-    {
-        id:10,
-        email: "test@test.com",
-        content: "댓글입니다",
-        createAt:"2025-04-25",
-    }
-]
+
 
 interface CommentProps {
     post: PostProps;
-    // getPost: (id:string) => Promise<void>;
+    getPost: (id:string) => Promise<void>;
 }
-export default function Comments({ post } : CommentProps) {
-    console.log(post)
+export default function Comments({ post, getPost } : CommentProps) {
+    
     const [comment, setComment]=useState("");
     const { user } =useContext(AuthContext);
+
+    console.log(post)
     const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const {
             target: {name, value},
@@ -113,7 +54,10 @@ export default function Comments({ post } : CommentProps) {
                             second: "2-digit"
                         }),
 
-                    })
+                    });
+
+                    // 문서 업데이트
+                    await getPost(post.id);
                 }
             }
             toast.success("댓글을 생성했습니다.");
@@ -124,7 +68,23 @@ export default function Comments({ post } : CommentProps) {
 
         }
     };
-    return (
+
+    const handleDeleteComment = async (data:CommentsInterface) => {
+        const confirm=window.confirm("해당 댓글을 삭제하시겠습니까?");
+        if(confirm && post.id){
+            const postRef = doc(db, "posts",post.id);
+            await updateDoc(postRef, {
+                comments: arrayRemove(data),
+            
+                });
+            
+            toast.success("댓글을 삭제했습니다.");
+            await getPost(post.id);
+            
+        }
+        
+    }
+     return (
         <div className="comments">
             <form className="comments__form" onSubmit={onSubmit}>
                 <div className="form__block">
@@ -137,12 +97,18 @@ export default function Comments({ post } : CommentProps) {
             </form>
             
             <div className="comments__list">
-                {COMMENTS?.map((comment) => (
-                    <div key={comment.id} className="comment__box">
+                {post?.comments
+                ?.slice(0)
+                ?.reverse()
+                .map((comment) => (
+                    <div key={comment.createAt} className="comment__box">
                         <div className="comment__profile-box">
                             <div className="comment__author-email">{comment?.email}</div>
                             <div className="comment__date">{comment?.createAt}</div>
-                            <div className="comment_delete">삭제</div>
+                            {comment.uid===user?.uid && (
+                                <div className="comment_delete" onClick={() => handleDeleteComment(comment)}>삭제</div>
+                            )}
+                            <div className="comment_delete" onClick={() => handleDeleteComment(comment)}>삭제</div>
                         </div>
                         <div className="comment__text">{comment?.content}</div>
                     </div>
@@ -152,3 +118,5 @@ export default function Comments({ post } : CommentProps) {
         </div>
     );
 }
+
+

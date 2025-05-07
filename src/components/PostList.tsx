@@ -12,6 +12,14 @@ interface PostListProps {
 
 type TabType = "all" | "my";
 
+export interface CommentsInterface {
+    content: string;
+    uid: string;
+    email: string;
+    createAt: string;
+
+
+}
 // 게시글 작성 필드 타입 지정
 export interface PostProps {
     id:string;
@@ -23,6 +31,7 @@ export interface PostProps {
     updatedAt:string;
     uid:string;
     category?: CategoryType;
+    comments?: CommentsInterface[];
 }
 
 export type CategoryType="Frontend"|"Backend"|"Web"|"Native";
