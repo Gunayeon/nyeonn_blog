@@ -84,7 +84,7 @@ export default function Comments({ post, getPost } : CommentProps) {
         }
         
     }
-    return (
+     return (
         <div className="comments">
             <form className="comments__form" onSubmit={onSubmit}>
                 <div className="form__block">
