@@ -108,7 +108,7 @@ export default function Comments({ post, getPost } : CommentProps) {
                             {comment.uid===user?.uid && (
                                 <div className="comment_delete" onClick={() => handleDeleteComment(comment)}>삭제</div>
                             )}
-                            <div className="comment_delete" onClick={() => handleDeleteComment(comment)}>삭제</div>
+                            
                         </div>
                         <div className="comment__text">{comment?.content}</div>
                     </div>
